@@ -2,13 +2,23 @@ const Header = (props) => {
   return <h1>{props.courseName}</h1>;
 };
 
+const Part = (props) => {
+  return (
+    <p>
+      {props.title} {props.exercises}
+    </p>
+  );
+};
+
 const Content = (props) => {
   return (
     <div>
       {props.courseInfo.map((info) => (
-        <p key={info.title}>
-          {info.title} {info.exercises}
-        </p>
+        <Part
+          key={info.title}
+          title={info.title}
+          exercises={info.exercises}
+        ></Part>
       ))}
     </div>
   );
