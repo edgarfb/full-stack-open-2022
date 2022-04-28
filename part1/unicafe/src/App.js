@@ -5,21 +5,27 @@ const Statistics = ({ good, neutral, bad }) => {
   return (
     <>
       <h2>statistics</h2>
-      <StatisticLine text="good" value={good} />
-      <StatisticLine text="neutral" value={neutral} />
-      <StatisticLine text="bad" value={bad} />
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={good} />
 
-      <StatisticLine text="all" value={all} />
-      <StatisticLine text="average" value={(good - bad) / all} />
-      <StatisticLine text="positive" value={(100 * good) / all} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+
+          <StatisticLine text="all" value={all} />
+          <StatisticLine text="average" value={(good - bad) / all} />
+          <StatisticLine text="positive" value={(100 * good) / all} />
+        </tbody>
+      </table>
     </>
   );
 };
 
 const StatisticLine = ({ text, value }) => (
-  <p>
-    {text} {value}
-  </p>
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
 );
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
