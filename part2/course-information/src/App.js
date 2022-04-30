@@ -1,31 +1,34 @@
-const Header = (props) => {
-  return <h1>{props.courseName}</h1>;
+const Header = ({ courseName }) => {
+  return <h1>{courseName}</h1>;
 };
 
-const Part = (props) => {
+const Part = (course) => {
+  const { name, exercises } = course;
   return (
     <p>
-      {props.name} {props.exercises}
+      {name} {exercises}
     </p>
   );
 };
 
-const Content = (props) => {
+const Content = ({ parts }) => {
   return (
     <>
-      {props.parts.map((part) => (
+      {parts.map((part) => (
         <Part key={part.name} name={part.name} exercises={part.exercises} />
       ))}
     </>
   );
 };
 
-const Total = (props) => {
-  const total =
-    props.parts[0].exercises +
-    props.parts[1].exercises +
-    props.parts[2].exercises;
-  return <p>Number of exercises {total}</p>;
+const Total = ({ parts }) => {
+  const total = parts.reduce((acc, part) => acc + part.exercises, 0);
+  return (
+    <p>
+      {" "}
+      <strong> Number of exercises {total}</strong>
+    </p>
+  );
 };
 
 const Course = ({ course }) => {
@@ -58,12 +61,8 @@ const App = () => {
         exercises: 14,
       },
       {
-        name: "Single source of truth",
-        exercises: 12,
-      },
-      {
-        name: "State management patterns",
-        exercises: 4,
+        name: "Redux",
+        exercises: 11,
       },
     ],
   };
