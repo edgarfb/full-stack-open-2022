@@ -1,24 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
-  // useEffect(() => {
-  //   if (newName !== "") {
-  //     setPersons([...persons, newName]);
-  //     setNewName("");
-  //   }
-  // }, [newName]);
-
   const submitHandler = (e) => {
     e.preventDefault();
+    if (isTaken(newName)) {
+      alert(`${newName} is already added to phonebook`);
+      return;
+    }
     setPersons([...persons, { name: newName }]);
     setNewName("");
   };
 
   const inputHandler = (e) => {
     setNewName(e.target.value);
+  };
+
+  const isTaken = (name) => {
+    return persons.some((person) => person.name === name);
   };
 
   return (
