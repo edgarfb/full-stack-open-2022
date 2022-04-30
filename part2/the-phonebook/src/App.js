@@ -1,9 +1,15 @@
 import { useState } from "react";
 
+const data = [
+  { name: "Arto Hellas", number: "040-123456", id: 1 },
+  { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+  { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+  { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+];
+
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", phoneNumber: "040-1234567" },
-  ]);
+  const [persons, setPersons] = useState(data);
+  const [findPersons, setFindPersons] = useState(null);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
 
@@ -18,7 +24,7 @@ const App = () => {
       alert("Please fill in all fields");
       return;
     }
-    setPersons([...persons, { name: newName, phoneNumber: newPhoneNumber }]);
+    setPersons([...persons, { name: newName, number: newPhoneNumber }]);
     setNewName("");
     setNewPhoneNumber("");
   };
@@ -34,9 +40,29 @@ const App = () => {
     return persons.some((person) => person.name === name);
   };
 
+  const searchHanlder = (e) => {
+    const search = e.target.value.toLowerCase();
+    if (search === "") {
+      setFindPersons(null);
+      return;
+    }
+    const personsFiltered = persons.filter((person) =>
+      person.name.toLowerCase().includes(search)
+    );
+
+    setFindPersons(personsFiltered);
+  };
+
+  const displayNumbers = findPersons === null ? persons : findPersons;
+
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <div>
+        <label htmlFor="search">filter shown with </label>
+        <input type="text" id="search" onChange={searchHanlder} />
+      </div>
+      <h2>add a new</h2>
       <form onSubmit={submitHandler}>
         <div>
           name: <input onChange={inputNameHandler} value={newName} />
@@ -50,14 +76,12 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <div>
-        {persons.map((person) => (
-          <p key={person.name}>
-            {person.name} {person.phoneNumber}{" "}
-          </p>
-        ))}
-      </div>
-      <div>Phone: {newPhoneNumber}</div>
+
+      {displayNumbers.map((person) => (
+        <p key={person.name}>
+          {person.name} {person.number}{" "}
+        </p>
+      ))}
     </div>
   );
 };
