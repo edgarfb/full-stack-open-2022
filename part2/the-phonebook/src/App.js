@@ -1,4 +1,7 @@
 import { useState } from "react";
+import SearchFilter from "./components/SearchFilter";
+import AddNewPeople from "./components/AddNewPeople";
+import PersonsDataDisplayer from "./components/PersonsDataDisplayer";
 
 const data = [
   { name: "Arto Hellas", number: "040-123456", id: 1 },
@@ -36,10 +39,12 @@ const App = () => {
     setNewPhoneNumber(e.target.value);
   };
 
+  // it is used to check if the name is already taken
   const isTaken = (name) => {
     return persons.some((person) => person.name === name);
   };
 
+  // searchHanlder function works together with the search filter
   const searchHanlder = (e) => {
     const search = e.target.value.toLowerCase();
     if (search === "") {
@@ -53,35 +58,23 @@ const App = () => {
     setFindPersons(personsFiltered);
   };
 
-  const displayNumbers = findPersons === null ? persons : findPersons;
+  // this manages the conditional rendering of the data on each render cicle
+  const personsDataConditional = findPersons === null ? persons : findPersons;
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <div>
-        <label htmlFor="search">filter shown with </label>
-        <input type="text" id="search" onChange={searchHanlder} />
-      </div>
+      <SearchFilter searchHanlder={searchHanlder} />
       <h2>add a new</h2>
-      <form onSubmit={submitHandler}>
-        <div>
-          name: <input onChange={inputNameHandler} value={newName} />
-        </div>
-        <div>
-          number:{" "}
-          <input onChange={inputPhoneNumberHandler} value={newPhoneNumber} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <AddNewPeople
+        newName={newName}
+        newPhoneNumber={newPhoneNumber}
+        submitHandler={submitHandler}
+        inputNameHandler={inputNameHandler}
+        inputPhoneNumberHandler={inputPhoneNumberHandler}
+      />
       <h2>Numbers</h2>
-
-      {displayNumbers.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.number}{" "}
-        </p>
-      ))}
+      <PersonsDataDisplayer personsDataConditional={personsDataConditional} />
     </div>
   );
 };
