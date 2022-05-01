@@ -1,20 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import SearchFilter from "./components/SearchFilter";
 import AddNewPeople from "./components/AddNewPeople";
 import PersonsDataDisplayer from "./components/PersonsDataDisplayer";
 
-const data = [
-  { name: "Arto Hellas", number: "040-123456", id: 1 },
-  { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-  { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-  { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-];
-
 const App = () => {
-  const [persons, setPersons] = useState(data);
+  const [persons, setPersons] = useState(null);
   const [findPersons, setFindPersons] = useState(null);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/persons")
+      .then((response) => setPersons(response.data));
+  }, []);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -74,7 +74,10 @@ const App = () => {
         inputPhoneNumberHandler={inputPhoneNumberHandler}
       />
       <h2>Numbers</h2>
-      <PersonsDataDisplayer personsDataConditional={personsDataConditional} />
+      {/* wait until the data is ready --- initial state is null */}
+      {persons && (
+        <PersonsDataDisplayer personsDataConditional={personsDataConditional} />
+      )}
     </div>
   );
 };
