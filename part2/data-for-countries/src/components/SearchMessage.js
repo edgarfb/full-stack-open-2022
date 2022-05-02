@@ -1,9 +1,9 @@
-const SearchMessage = ({ state, searchResult }) => {
+const SearchMessage = ({ state, searchResult, country, setCountry }) => {
   // conver an object to an array
   const flatLanguages = () => {
     const languages = [];
-    for (const lang in searchResult.languages) {
-      languages.push(searchResult.languages[lang]);
+    for (const lang in country.languages) {
+      languages.push(country.languages[lang]);
     }
     return languages;
   };
@@ -15,13 +15,16 @@ const SearchMessage = ({ state, searchResult }) => {
       {state === "noMatches" && <p>There are no matches for that query</p>}
       {state === "correct" &&
         searchResult.map((country) => (
-          <p key={country.name.common}>{country.name.common}</p>
+          <p key={country.name.common}>
+            {country.name.common}{" "}
+            <button onClick={() => setCountry(country)}>show</button>{" "}
+          </p>
         ))}
-      {state === "justOne" && (
+      {country !== null && (
         <div>
-          <h2>{searchResult.name.common}</h2>
-          <p>capital: {searchResult.capital[0]}</p>
-          <p>area: {searchResult.area}</p>
+          <h2>{country.name.common}</h2>
+          <p>capital: {country.capital[0]}</p>
+          <p>area: {country.area}</p>
           <div>
             <h3>languages: </h3>
             <ul>
@@ -31,7 +34,7 @@ const SearchMessage = ({ state, searchResult }) => {
             </ul>
           </div>
           <div>
-            <img src={searchResult.flags.png} alt={searchResult.name.common} />
+            <img src={country.flags.png} alt={country.name.common} />
           </div>
         </div>
       )}

@@ -8,6 +8,7 @@ import SearchMessage from "./components/SearchMessage";
 function App() {
   const [countries, setCountries] = useState([]);
   const [searchResult, setSearchResult] = useState(null);
+  const [country, setCountry] = useState(null);
   const [state, setState] = useState("empty");
 
   useEffect(() => {
@@ -23,10 +24,12 @@ function App() {
     );
     if (query === "") {
       setState("empty");
+      setCountry(null);
       setSearchResult(null);
     } else if (filteredCountries.length === 1) {
       setState("justOne");
-      setSearchResult(filteredCountries[0]);
+      setCountry(filteredCountries[0]);
+      setSearchResult(null);
     } else if (filteredCountries.length > 10) {
       setState("toMany");
       setSearchResult(null);
@@ -41,7 +44,12 @@ function App() {
   return (
     <div>
       <SearchFilter searchHanlder={searchHanlder} />
-      <SearchMessage state={state} searchResult={searchResult} />
+      <SearchMessage
+        state={state}
+        searchResult={searchResult}
+        country={country}
+        setCountry={setCountry}
+      />
     </div>
   );
 }
