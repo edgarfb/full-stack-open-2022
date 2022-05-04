@@ -32,15 +32,19 @@ function App() {
       setSearchResult(null);
     } else if (filteredCountries.length > 10) {
       setState("toMany");
+      setCountry(null);
       setSearchResult(null);
     } else if (query.length > 0 && filteredCountries.length === 0) {
       setState("noMatches");
+      setCountry(null);
       setSearchResult(null);
     } else {
       setState("correct");
+      setCountry(null);
       setSearchResult(filteredCountries);
     }
   };
+
   return (
     <div>
       <SearchFilter searchHanlder={searchHanlder} />

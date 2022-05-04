@@ -1,5 +1,8 @@
+import WeatherInfo from "./WeatherInfo";
+
 const SearchMessage = ({ state, searchResult, country, setCountry }) => {
   // conver an object to an array
+
   const flatLanguages = () => {
     const languages = [];
     for (const lang in country.languages) {
@@ -14,10 +17,16 @@ const SearchMessage = ({ state, searchResult, country, setCountry }) => {
       {state === "toMany" && <p>To many matches, specify another filter</p>}
       {state === "noMatches" && <p>There are no matches for that query</p>}
       {state === "correct" &&
-        searchResult.map((country) => (
-          <p key={country.name.common}>
-            {country.name.common}{" "}
-            <button onClick={() => setCountry(country)}>show</button>{" "}
+        searchResult.map((oneCountry) => (
+          <p key={oneCountry.name.common}>
+            {oneCountry.name.common}{" "}
+            <button
+              onClick={() => {
+                setCountry(oneCountry);
+              }}
+            >
+              show
+            </button>{" "}
           </p>
         ))}
       {country !== null && (
@@ -36,6 +45,8 @@ const SearchMessage = ({ state, searchResult, country, setCountry }) => {
           <div>
             <img src={country.flags.png} alt={country.name.common} />
           </div>
+
+          <WeatherInfo country={country} />
         </div>
       )}
     </div>
