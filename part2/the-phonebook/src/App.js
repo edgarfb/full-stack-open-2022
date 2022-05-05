@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import crud from "./services/crud";
 import SearchFilter from "./components/SearchFilter";
 import AddNewPeople from "./components/AddNewPeople";
 import PersonsDataDisplayer from "./components/PersonsDataDisplayer";
@@ -11,9 +12,7 @@ const App = () => {
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then((response) => setPersons(response.data));
+    crud.getAll().then((response) => setPersons(response.data));
   }, []);
 
   const submitHandler = (e) => {
@@ -27,6 +26,7 @@ const App = () => {
       alert("Please fill in all fields");
       return;
     }
+    crud.createPerson({ name: newName, number: newPhoneNumber });
     setPersons([...persons, { name: newName, number: newPhoneNumber }]);
     setNewName("");
     setNewPhoneNumber("");
