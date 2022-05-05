@@ -17,17 +17,33 @@ const App = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (isTaken(newName)) {
-      alert(`${newName} is already added to phonebook`);
-      return;
-    }
+    const person = findPerson(newName);
     // to prevent adding empty fileds
     if (newName === "" || newPhoneNumber === "") {
       alert("Please fill in all fields");
       return;
     }
-    crud.createPerson({ name: newName, number: newPhoneNumber });
-    setPersons([...persons, { name: newName, number: newPhoneNumber }]);
+
+    if (isTaken(newName)) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        crud.updatePersonNumber(person.id, {
+          ...person,
+          number: newPhoneNumber,
+        });
+      }
+      reset();
+    } else {
+      crud.createPerson({ name: newName, number: newPhoneNumber });
+      setPersons([...persons, { name: newName, number: newPhoneNumber }]);
+      reset();
+    }
+  };
+
+  const reset = () => {
     setNewName("");
     setNewPhoneNumber("");
   };
@@ -40,9 +56,9 @@ const App = () => {
   };
 
   // it is used to check if the name is already taken
-  const isTaken = (name) => {
-    return persons.some((person) => person.name === name);
-  };
+  const isTaken = (name) => persons.some((person) => person.name === name);
+
+  const findPerson = (name) => persons.find((person) => person.name === name);
 
   // searchHanlder function works together with the search filter
   const searchHanlder = (e) => {
