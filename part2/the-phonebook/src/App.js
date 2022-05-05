@@ -13,7 +13,7 @@ const App = () => {
 
   useEffect(() => {
     crud.getAll().then((response) => setPersons(response.data));
-  }, []);
+  }, [persons]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -76,7 +76,11 @@ const App = () => {
       <h2>Numbers</h2>
       {/* wait until the data is ready --- initial state is null */}
       {persons && (
-        <PersonsDataDisplayer personsDataConditional={personsDataConditional} />
+        <PersonsDataDisplayer
+          persons={persons}
+          setPersons={setPersons}
+          personsDataConditional={personsDataConditional}
+        />
       )}
     </div>
   );

@@ -6,7 +6,15 @@ const getAll = () => {
 };
 
 const createPerson = (person) => {
-  return axios.post("http://localhost:3001/persons", person);
+  return axios
+    .post("http://localhost:3001/persons", person)
+    .then((response) => console.log(response.statusText));
 };
 
-export default { getAll, createPerson };
+const deletePerson = (id) => {
+  return axios
+    .delete(`http://localhost:3001/persons/${id}`)
+    .then((response) => console.log(`The deleted was ${response.statusText}`));
+};
+
+export default { getAll, createPerson, deletePerson };
