@@ -6,21 +6,17 @@ const getAll = () => {
 };
 
 const createPerson = (person) => {
-  return axios
-    .post("http://localhost:3001/persons", person)
-    .then((response) => console.log(response.statusText));
+  return axios.post("http://localhost:3001/persons", person);
 };
 
 const updatePersonNumber = (id, person) => {
   return axios
     .put(`http://localhost:3001/persons/${id}`, person)
-    .then((response) => console.log(response));
+    .then((response) => response);
 };
 
 const deletePerson = (id) => {
-  return axios
-    .delete(`http://localhost:3001/persons/${id}`)
-    .then((response) => console.log(`The deleted was ${response.statusText}`));
+  return axios.delete(`http://localhost:3001/persons/${id}`);
 };
 
 export default { getAll, createPerson, updatePersonNumber, deletePerson };

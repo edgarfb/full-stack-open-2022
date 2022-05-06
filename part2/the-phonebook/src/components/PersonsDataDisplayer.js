@@ -5,8 +5,7 @@ const PersonsDataDisplayer = ({
   persons,
   setPersons,
 }) => {
-  const newPersons = (id) =>
-    persons.filter((person) => person.id !== personsDataConditional.id);
+  const newPersons = (id) => persons.filter((person) => person.id !== id);
 
   return (
     <div>

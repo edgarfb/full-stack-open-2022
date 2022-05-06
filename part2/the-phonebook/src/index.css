@@ -1,0 +1,13 @@
+html {
+    font-family: sans-serif;
+}
+
+.success-message {
+    border: 2px solid green;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: lightgray;
+    color: green;
+    font-weight: bold;
+}
