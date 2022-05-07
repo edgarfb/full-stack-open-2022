@@ -5,6 +5,7 @@ import SearchFilter from "./components/SearchFilter";
 import AddNewPeople from "./components/AddNewPeople";
 import PersonsDataDisplayer from "./components/PersonsDataDisplayer";
 import SuccessMessage from "./components/SuccessMessage";
+import RejectMessage from "./components/RejectMessage";
 
 const App = () => {
   const [persons, setPersons] = useState(null);
@@ -13,6 +14,7 @@ const App = () => {
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
 
   const [successMessage, setSuccessMessage] = useState("");
+  const [rejectMessage, setRejectMessage] = useState("");
 
   useEffect(() => {
     crud.getAll().then((response) => setPersons(response.data));
@@ -28,11 +30,10 @@ const App = () => {
     }
 
     if (isTaken(newName)) {
-      if (
-        window.confirm(
-          `${newName} is already added to phonebook, replace the old number with a new one?`
-        )
-      ) {
+      const confirm = window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+      if (confirm) {
         crud
           .updatePersonNumber(person.id, {
             ...person,
@@ -41,6 +42,14 @@ const App = () => {
           // This will update the person in the state
           .then((res) => {
             crud.getAll().then((response) => setPersons(response.data));
+          })
+          .catch((err) => {
+            console.log("Error from catch", err);
+            setRejectMessage(newName);
+            setTimeout(() => {
+              crud.getAll().then((response) => setPersons(response.data));
+              setRejectMessage("");
+            }, 2000);
           });
       }
       reset();
@@ -97,6 +106,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       {successMessage !== "" && <SuccessMessage personName={successMessage} />}
+      {rejectMessage && <RejectMessage personName={rejectMessage} />}
       <SearchFilter searchHanlder={searchHanlder} />
       <h2>add a new</h2>
       <AddNewPeople

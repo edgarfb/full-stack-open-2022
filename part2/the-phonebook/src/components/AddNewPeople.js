@@ -8,7 +8,7 @@ const AddNewPeople = ({
   return (
     <form onSubmit={submitHandler}>
       <div>
-        name: <input onChange={inputNameHandler} value={newName} />
+        name: <input onChange={inputNameHandler} value={newName} autoFocus />
       </div>
       <div>
         number:{" "}
